@@ -1,0 +1,21 @@
+{
+    "_template": "https://github.com/thomasjahoda/cookiecutter-pypackage.git",
+    "add_pyup_badge": "n",
+    "command_line_interface": "No command-line interface",
+    "create_author_file": "y",
+    "email": "thomasjahoda@users.noreply.github.com",
+    "full_name": "Thomas Jahoda",
+    "github_username": "thomasjahoda",
+    "initialize_git_repository": "y",
+    "initialize_venv_using_virtualenvwrapper": "y",
+    "open_source_license": "MIT license",
+    "project_creation_date": "2019-03-25",
+    "project_creation_date_year": "2019",
+    "project_name": "Personal Subprocess Utility Library",
+    "project_short_description": "",
+    "project_slug": "tjpy_subprocess_util",
+    "pypi_username": "thomasjahoda",
+    "use_pypi_deployment_with_travis": "y",
+    "use_pytest": "y",
+    "version": "0.1.0"
+}
