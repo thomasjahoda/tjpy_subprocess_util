@@ -47,6 +47,6 @@ setup(
     packages=find_packages(include=['tjpy_subprocess_util', 'tjpy_subprocess_util.*']),
     test_suite='tests',
     url='https://github.com/thomasjahoda/tjpy_subprocess_util',
-    version='0.1.1',
+    version='0.1.2',
     zip_safe=False,
 )
