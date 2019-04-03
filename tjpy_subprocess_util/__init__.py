@@ -1,3 +1,3 @@
 """Top-level package for Personal Subprocess Utility Library."""
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
