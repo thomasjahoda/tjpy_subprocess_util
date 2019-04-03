@@ -4,7 +4,7 @@ import logging
 import subprocess
 from pathlib import Path
 from subprocess import CompletedProcess
-from typing import Any, IO, Iterable, List, Optional, Sequence, Union, cast
+from typing import Any, IO, Iterable, List, Optional, Union
 
 from tjpy_subprocess_util.exception import SubProcessExecutionException, SubProcessStartException
 
@@ -34,23 +34,25 @@ class Result:
 class SubProcessExecution:
 
     @staticmethod
-    def execute_from_arg_list(args: List[str],
-                              check_error_code: bool = True,
-                              follow_output: bool = False,
-                              working_directory: Path = None,
-                              logging_level: str = "DEBUG",
-                              custom_input: Optional[str] = None) -> Result:
+    def execute(args: List[str],
+                check_error_code: bool = True,
+                follow_output: bool = False,
+                working_directory: Path = None,
+                logging_level: str = "DEBUG",
+                custom_input: Optional[str] = None) -> Result:
         SubProcessExecution._log_execute_call(args, working_directory, logging_level)
 
         stdout: Union[None, int, IO[Any]] = sys.stdout if follow_output else subprocess.PIPE
         stderr: Union[None, int, IO[Any]] = sys.stderr if follow_output else subprocess.PIPE
+        stdin: Union[None, int, IO[Any]] = sys.stdin if custom_input is None else None
         try:
             result: CompletedProcess = subprocess.run(
                 args,
                 cwd=working_directory,
                 stdout=stdout,
                 stderr=stderr,
-                stdin=subprocess.PIPE,
+                stdin=stdin,
+                input=custom_input,
                 encoding="utf-8"
             )
 
@@ -81,27 +83,6 @@ class SubProcessExecution:
             stdout=SubProcessExecution._output_to_string(result.stdout),
             stderr=SubProcessExecution._output_to_string(result.stderr)
         )
-
-    @staticmethod
-    def execute(*args: Union[str, List[str]],
-                check_error_code: bool = True,
-                follow_output: bool = False,
-                working_directory: Path = None,
-                logging_level: str = "DEBUG") -> Result:
-        assert len(args) != 0
-        if isinstance(args[0], List):
-            assert len(args) == 1
-            arg_list = cast(Sequence[str], args[0])
-            str_args = arg_list
-        else:
-            str_args = cast(Sequence[str], args)
-        for arg in str_args:
-            assert isinstance(arg, str)
-        return SubProcessExecution.execute_from_arg_list(list(str_args),
-                                                         check_error_code=check_error_code,
-                                                         follow_output=follow_output,
-                                                         working_directory=working_directory,
-                                                         logging_level=logging_level)
 
     @staticmethod
     def _output_to_string(output):
