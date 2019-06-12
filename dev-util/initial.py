@@ -1,7 +1,9 @@
 """
 Script to execute after creating the project.
 - Encrypts the PyPi password to the .travis.yml
-- Sets the test runner to pytest if using PyCharm
+- Updates PyCharm configuration if detected
+-- Sets the test runner to pytest
+-- Excludes cache directories
 """
 
 import configparser
@@ -38,7 +40,7 @@ def encrypt_pypi_password_for_travis_if_necessary():
 
 def _encrypt_pypi_password_for_travis(project_owner_pypi_username: str):
     pypi_username, pypi_password = _get_pypi_credentials()
-    if project_owner_pypi_username != project_owner_pypi_username:
+    if pypi_username != project_owner_pypi_username:
         raise Exception(f"The pypi username stated in {TRAVIS_YML_FILE.name} ({project_owner_pypi_username}) "
                         f"does not match the one configured in the current environments "
                         f"pypi settings ({pypi_username}). "
@@ -50,8 +52,11 @@ def _encrypt_pypi_password_for_travis(project_owner_pypi_username: str):
             capture_output=True,
         )
     except FileNotFoundError as exception:
-        raise Exception("Command 'travis' needs to be available on path. "
-                        "Please install https://github.com/travis-ci/travis.rb#installation") from exception
+        raise Exception("Command 'travis' needs to be available on path.\n"
+                        "Please install https://github.com/travis-ci/travis.rb#installation\n"
+                        "Also make sure to login via 'travis login'.\n"
+                        "Generating an access token yourself is recommended though and "
+                        "logging in via: travis login --github-token [token]") from exception
     result.check_returncode()
     output = str(result.stdout, encoding="utf-8")
     encrypted_password = output[1:-2]
@@ -65,7 +70,6 @@ def _encrypt_pypi_password_for_travis(project_owner_pypi_username: str):
 def _get_pypi_credentials() -> Tuple[str, str]:
     pypirc_file = Path("~/.pypirc").expanduser()
     if pypirc_file.is_file():
-
         config = configparser.ConfigParser()
         config.read(pypirc_file)
         pypi_username = config['pypi']['username']
