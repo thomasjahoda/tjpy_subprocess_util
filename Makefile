@@ -56,16 +56,16 @@ clean-mypy: ## remove mypy cache
 lint: ## check style with flake8
 	flake8 tjpy_subprocess_util tests --max-line-length=120
 
-type-check: ## run tests quickly with the default Python
+type-check: ## check types with mypy
 	mypy tjpy_subprocess_util tests
 
-test: ## run tests quickly with the default Python
-	py.test
+test: ## run all tests with the current python env
+	pytest
 
-test-all: ## run tests on every Python version with tox
+check-multiple-python-versions: ## run tests and other checks on every Python version with tox
 	tox
 
-coverage: ## check code coverage quickly with the default Python
+coverage: ## check code coverage with the current python env
 	coverage run --source tjpy_subprocess_util -m pytest
 	coverage report -m
 	coverage html
@@ -85,16 +85,16 @@ servedocs: docs ## compile the docs watching for changes
 release: dist ## package and upload a release
 	twine upload dist/*
 
-dist: clean ## builds source and wheel package
+dist: clean-build ## builds source and wheel package
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
 
-install: clean ## install the package to the active Python's site-packages (production-mode)
+install: ## install the package to the active Python's site-packages (production-mode)
 	pip install --upgrade .
 
-install-dev: clean ## install the package for development
+install-dev: ## install the package for development
 	pip install -e .[dev]
 
-install-dev-upgrade: clean ## install-dev + upgrade any dependencies if possible
+install-dev-upgrade: ## install-dev + upgrade any dependencies if possible
 	pip install --upgrade -e .[dev]
