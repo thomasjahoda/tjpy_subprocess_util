@@ -61,5 +61,5 @@ def _replace_source_paths_with_paths_relative_to_this_script(output: str):
 
 execute(["make", "install-dev"])
 execute(["make", "test"])
-execute(["make", "lint"])
-execute(["make", "type-check"])
+execute(["make", "flake8"])
+execute(["make", "mypy"])

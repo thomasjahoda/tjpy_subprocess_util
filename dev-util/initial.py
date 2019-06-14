@@ -30,20 +30,25 @@ TRAVIS_YML_ENCRYPTED_PASSWORD_PLACEHOLDER_VALUE = "PLEASE_REPLACE_ME"
 
 def encrypt_pypi_password_for_travis_if_necessary():
     travis_yml_content = yaml.safe_load(TRAVIS_YML_FILE.read_text(encoding="utf-8"))
-    project_owner_pypi_username = travis_yml_content["deploy"]["user"]
-    project_owner_pypi_encrypted_password = travis_yml_content["deploy"]["password"]["secure"]
-    if project_owner_pypi_encrypted_password == TRAVIS_YML_ENCRYPTED_PASSWORD_PLACEHOLDER_VALUE:
-        _encrypt_pypi_password_for_travis(project_owner_pypi_username)
+    deploy_job = travis_yml_content["jobs"]["include"][-1]
+    if deploy_job["stage"] == "deploy":
+        project_owner_pypi_username = deploy_job["deploy"]["user"]
+        project_owner_pypi_encrypted_password = deploy_job["deploy"]["password"]["secure"]
+        if project_owner_pypi_encrypted_password == TRAVIS_YML_ENCRYPTED_PASSWORD_PLACEHOLDER_VALUE:
+            _encrypt_pypi_password_for_travis(project_owner_pypi_username)
+        else:
+            print(f"Travis password has already been encrypted in {TRAVIS_YML_FILE.name}.")
     else:
-        print(f"Travis password has already been encrypted in {TRAVIS_YML_FILE.name}.")
+        print("Travis is not deploying to PyPi, skipping check for PyPi credentials")
 
 
 def _encrypt_pypi_password_for_travis(project_owner_pypi_username: str):
     pypi_username, pypi_password = _get_pypi_credentials()
     if pypi_username != project_owner_pypi_username:
-        raise Exception(f"The pypi username stated in {TRAVIS_YML_FILE.name} ({project_owner_pypi_username}) "
-                        f"does not match the one configured in the current environments "
-                        f"pypi settings ({pypi_username}). "
+        raise Exception(f"The PyPi password for Travis has not yet been configured but "
+                        f"the local pypi credentials' username ({pypi_username}) "
+                        f"does not match the pypi username stated "
+                        f"in {TRAVIS_YML_FILE.name} ({project_owner_pypi_username}). "
                         f"Please check your ~/.pypirc file or your keyring properties for pypi.")
     try:
         result = subprocess.run(
@@ -52,11 +57,8 @@ def _encrypt_pypi_password_for_travis(project_owner_pypi_username: str):
             capture_output=True,
         )
     except FileNotFoundError as exception:
-        raise Exception("Command 'travis' needs to be available on path.\n"
-                        "Please install https://github.com/travis-ci/travis.rb#installation\n"
-                        "Also make sure to login via 'travis login'.\n"
-                        "Generating an access token yourself is recommended though and "
-                        "logging in via: travis login --github-token [token]") from exception
+        raise Exception("Command 'travis' needs to be available on path. "
+                        "Please install https://github.com/travis-ci/travis.rb#installation") from exception
     result.check_returncode()
     output = str(result.stdout, encoding="utf-8")
     encrypted_password = output[1:-2]
@@ -158,9 +160,7 @@ class PyCharmConfigUpdater:
         ))
 
         excluded_folders = [
-            "file://$MODULE_DIR$/.mypy_cache",
-            "file://$MODULE_DIR$/.pytest_cache",
-            "file://$MODULE_DIR$/.tox",
+            "file://$MODULE_DIR$/.dev",
             f"file://$MODULE_DIR$/{_get_project_name()}.egg-info",
         ]
         for excluded_folder in excluded_folders:

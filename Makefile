@@ -53,23 +53,23 @@ clean-test: ## remove test and coverage artifacts
 clean-mypy: ## remove mypy cache
 	rm -fr .mypy_cache/
 
-lint: ## check style with flake8
+flake8: ## check style with flake8 (lint)
 	flake8 tjpy_subprocess_util tests --max-line-length=120
 
-type-check: ## check types with mypy
+mypy: ## check types with mypy
 	mypy tjpy_subprocess_util tests
 
 test: ## run all tests with the current python env
 	pytest
 
-check-multiple-python-versions: ## run tests and other checks on every Python version with tox
+tox: ## run tests and other checks on every Python version with tox
 	tox
 
 coverage: ## check code coverage with the current python env
-	coverage run --source tjpy_subprocess_util -m pytest
+    pytest --cov=tjpy_subprocess_util --cov-report=xml:.dev/coverage/coverage.xml
 	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
+	coverage html --directory .dev/coverage/htmlcov
+	$(BROWSER) .dev/coverage/htmlcov/index.html
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/tjpy_subprocess_util.rst
