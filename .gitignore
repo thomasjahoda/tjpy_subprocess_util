@@ -2,6 +2,11 @@
 /.idea
 *.iml
 
+# .dev directory for build, cache and script result directories
+.dev/*
+!.dev/README.md
+
+# personal local temporary files
 mytmpstuff-*
 
 # Byte-compiled / optimized / DLL files

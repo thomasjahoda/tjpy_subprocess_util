@@ -20,6 +20,7 @@ development_requirements = [
     'pytest>=3.8.2',
     'pytest-runner>=4.2',
     'pytest-mock>=1.10.1',
+    'pytest-cov>=2.7.1',
 ]
 
 setup(

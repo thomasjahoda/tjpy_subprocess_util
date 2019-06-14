@@ -7,11 +7,16 @@ Personal Subprocess Utility Library
         :target: https://pypi.python.org/pypi/tjpy_subprocess_util
 
 .. image:: https://img.shields.io/travis/thomasjahoda/tjpy_subprocess_util.svg
-        :target: https://travis-ci.org/thomasjahoda/tjpy_subprocess_util
+  :target: https://travis-ci.org/thomasjahoda/tjpy_subprocess_util
+  :CI Status
 
 .. image:: https://readthedocs.org/projects/tjpy-subprocess-util/badge/?version=latest
-        :target: https://tjpy-subprocess-util.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+  :target: https://tjpy-subprocess-util.readthedocs.io/en/latest/?badge=latest
+  :alt: Documentation Status
+
+.. image:: https://codecov.io/gh/codecov/example-python/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/codecov/example-python
+  :alt: Code Coverage
 
 
 

@@ -1,28 +1,45 @@
 # Config file for automatic testing at travis-ci.org
 
 language: python
-python:
-    - 3.7
-    - 3.6
 dist: xenial
 
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis
+install:
+  - pip install -U tox
 
-# Command to run tests, e.g. python setup.py test
-script: tox
+stages:
+  - name: test
+  - name: deploy
+    if: tag IS present
 
-# Assuming you have installed the travis-ci CLI tool, after you
-# create the Github repo and add it to Travis, run the
-# following command to finish PyPI deployment setup:
-# $ travis encrypt --add deploy.password
-deploy:
-    provider: pypi
-    distributions: sdist bdist_wheel
-    user: thomasjahoda
-    password:
-        secure: PLEASE_REPLACE_ME
-    on:
-        tags: true
-        repo: thomasjahoda/tjpy_subprocess_util
-        python: 3.7
+jobs:
+  include:
+    # --
+    - stage: test
+      name: "tests python3.7"
+      python: 3.7
+      script: tox -e py37
+      after_success:
+        - pip install codecov
+        - codecov --file .tox/py37/coverage.xml
+    - name: "tests python3.6"
+      python: 3.6
+      script: tox -e py36
+    - name: "mypy"
+      python: 3.7
+      script: tox -e mypy
+    - name: "flake8"
+      python: 3.7
+      script: tox -e flake8
+    # --
+    - stage: deploy
+      python: 3.7
+      deploy:
+        provider: pypi
+        distributions: sdist bdist_wheel
+        user: thomasjahoda
+        password:
+          secure: PLEASE_REPLACE_ME
+        on:
+          tags: true
+          repo: thomasjahoda/tjpy_subprocess_util
+          python: 3.7
