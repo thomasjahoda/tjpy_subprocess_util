@@ -14,8 +14,8 @@ Personal Subprocess Utility Library
   :target: https://tjpy-subprocess-util.readthedocs.io/en/latest/?badge=latest
   :alt: Documentation Status
 
-.. image:: https://codecov.io/gh/codecov/example-python/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/codecov/example-python
+.. image:: https://codecov.io/gh/thomasjahoda/tjpy_subprocess_util/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/thomasjahoda/tjpy_subprocess_util
   :alt: Code Coverage
 
 

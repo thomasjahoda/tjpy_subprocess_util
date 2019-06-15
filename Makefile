@@ -66,7 +66,7 @@ tox: ## run tests and other checks on every Python version with tox
 	tox
 
 coverage: ## check code coverage with the current python env
-    pytest --cov=tjpy_subprocess_util --cov-report=xml:.dev/coverage/coverage.xml
+	pytest --cov=tjpy_subprocess_util --cov-report=xml:.dev/coverage/coverage.xml
 	coverage report -m
 	coverage html --directory .dev/coverage/htmlcov
 	$(BROWSER) .dev/coverage/htmlcov/index.html
