@@ -8,7 +8,7 @@ Personal Subprocess Utility Library
 
 .. image:: https://travis-ci.org/thomasjahoda/tjpy_subprocess_util.svg?branch=master
   :target: https://travis-ci.org/thomasjahoda/tjpy_subprocess_util
-  :CI Status
+  :alt: CI Status
 
 .. image:: https://readthedocs.org/projects/tjpy-subprocess-util/badge/?version=latest
   :target: https://tjpy-subprocess-util.readthedocs.io/en/latest/?badge=latest
