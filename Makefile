@@ -53,6 +53,8 @@ clean-test: ## remove test and coverage artifacts
 clean-mypy: ## remove mypy cache
 	rm -fr .mypy_cache/
 
+build: install-dev test flake8 mypy ## execute automated tooling to build and test the project in the current python version
+
 flake8: ## check style with flake8 (lint)
 	flake8 tjpy_subprocess_util tests --max-line-length=120
 
