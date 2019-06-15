@@ -4,9 +4,9 @@ Personal Subprocess Utility Library
 
 
 .. image:: https://img.shields.io/pypi/v/tjpy_subprocess_util.svg
-        :target: https://pypi.python.org/pypi/tjpy_subprocess_util
+  :target: https://pypi.python.org/pypi/tjpy_subprocess_util
 
-.. image:: https://img.shields.io/travis/thomasjahoda/tjpy_subprocess_util.svg
+.. image:: https://travis-ci.org/thomasjahoda/tjpy_subprocess_util.svg?branch=master
   :target: https://travis-ci.org/thomasjahoda/tjpy_subprocess_util
   :CI Status
 
