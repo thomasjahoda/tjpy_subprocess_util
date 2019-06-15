@@ -20,7 +20,7 @@ jobs:
       script: tox -e py37
       after_success:
         - pip install codecov
-        - codecov --file .tox/py37/coverage.xml
+        - codecov --file .dev/.tox/py37/coverage.xml
     - name: "tests python3.6"
       python: 3.6
       script: tox -e py36
